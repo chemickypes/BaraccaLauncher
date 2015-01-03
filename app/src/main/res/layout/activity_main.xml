@@ -1,0 +1,24 @@
+<android.support.v4.widget.SlidingPaneLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".MainActivity">
+
+
+    <fragment
+        android:id="@+id/list_pane"
+        android:name="com.baraccasoftware.baraccalauncher.AppListFragment"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        ></fragment>
+
+    <fragment
+        android:id="@+id/content_pane"
+        android:name="com.baraccasoftware.baraccalauncher.HomeFragment"
+        android:layout_width="450dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"  ></fragment>
+
+</android.support.v4.widget.SlidingPaneLayout>
