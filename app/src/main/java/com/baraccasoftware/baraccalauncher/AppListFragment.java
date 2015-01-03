@@ -1,8 +1,13 @@
 package com.baraccasoftware.baraccalauncher;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -10,6 +15,8 @@ import android.widget.ListView;
 
 import com.baraccasoftware.baraccalauncher.appobject.AppAdapter;
 import com.baraccasoftware.baraccalauncher.appobject.AppContent;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -28,6 +35,9 @@ public class AppListFragment extends ListFragment {
 
     private OnAppChooseListener mListener;
     private AppAdapter mAdapter;
+    private PackageManager packageManager;
+
+
 
 //    public static AppListFragment newInstance(String param1, String param2) {
 //        AppListFragment fragment = new AppListFragment();
@@ -54,6 +64,7 @@ public class AppListFragment extends ListFragment {
 //            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
 
+        packageManager = getActivity().getPackageManager();
         mAdapter = new AppAdapter(getActivity());
         setListAdapter(mAdapter);
     }
@@ -64,6 +75,7 @@ public class AppListFragment extends ListFragment {
         super.onAttach(activity);
         try {
             mListener = (OnAppChooseListener) activity;
+
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnAppChooseListener");
@@ -76,6 +88,11 @@ public class AppListFragment extends ListFragment {
         mListener = null;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -87,6 +104,28 @@ public class AppListFragment extends ListFragment {
             mListener.OnAppChoose(AppContent.ITEMS.get(position));
         }
     }
+
+
+
+    public void addItems(){
+        if(mAdapter.getCount() == 0) {
+            addItems(false);
+        }
+    }
+
+    public void addItems(boolean clear){
+        mAdapter.addAll(AppContent.ITEMS,clear);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public boolean isClear(){
+        try {
+            return mAdapter.getCount() == 0;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -101,5 +140,7 @@ public class AppListFragment extends ListFragment {
     public interface OnAppChooseListener {
         public void OnAppChoose(AppContent.AppItem appItem);
     }
+
+
 
 }
